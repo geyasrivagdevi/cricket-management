@@ -1,0 +1,23 @@
+<% layout('layout') %>
+
+<h2>Teams</h2>
+<button onclick="showForm('teamForm')">Add Team</button>
+<div id="teamForm" style="display: none;">
+    <h3>Add Team</h3>
+    <form id="addTeamForm">
+        <label for="teamName">Team Name:</label>
+        <input type="text" id="teamName" name="name" required>
+        <button type="submit">Add</button>
+    </form>
+</div>
+<ul id="teamsList">
+    <% teams.forEach(team => { %>
+        <li>
+            <%= team.name %>
+            <button onclick="showEditForm(<%= team.id %>, '<%= team.name %>')">Edit</button>
+            <button onclick="deleteTeam(<%= team.id %>)">Delete</button>
+        </li>
+    <% }) %>
+</ul>
+
+<script src="/scripts/teams.js"></script>
