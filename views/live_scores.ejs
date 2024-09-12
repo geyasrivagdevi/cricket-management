@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Cricket Scores</title>
+    <link rel="stylesheet" href="/css/live.css">
+</head>
+<body>
+    <h1>Live Cricket Scores</h1>
+    <p>Debug: matchesData length: <%= matchesData ? matchesData.length : 'undefined' %></p>
+    
+    <% if (matchesData && matchesData.length > 0) { %>
+        <ul>
+            <% matchesData.forEach(match => { %>
+                <li>
+                    <h2><%= match.matchDesc %></h2>
+                    <p><%= match.team1 %> vs <%= match.team2 %></p>
+                    <p>Series: <%= match.seriesName %></p>
+                    <p>Format: <%= match.matchFormat %></p>
+                    <p>Status: <%= match.status %></p>
+                    <p><%= match.team1 %> Score: <%= match.team1Score %></p>
+                    <p><%= match.team2 %> Score: <%= match.team2Score %></p>
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No live scores available at the moment.</p>
+    <% } %>
+</body>
+</html>

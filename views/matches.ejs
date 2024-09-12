@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Matches and Scores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+        }
+        .navbar {
+            background-color: #1e5799;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #1e5799;
+            color: #fff;
+        }
+        .team-score {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-cricket"></i> CricketMania</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/index"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/players"><i class="fas fa-user"></i> Players</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/teams"><i class="fas fa-users"></i> Teams</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/matches"><i class="fas fa-trophy"></i> Matches</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/live_scores"><i class="fas fa-chart-line"></i> Live Scoring</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" id="logoutBtn" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="mb-4">Past Matches and Scores</h1>
+        <% if (matches && matches.length > 0) { %>
+            <% matches.forEach(match => { %>
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><%= match.matchDesc %></h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong>Date:</strong> <%= match.match_date %></p>
+                        <p class="card-text"><strong>Type:</strong> <%= match.match_type %></p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="team-score"><%= match.team1 %>: <%= match.team1Score %></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="team-score"><%= match.team2 %>: <%= match.team2Score %></p>
+                            </div>
+                        </div>
+                        <p class="card-text"><strong>Result:</strong> <%= match.matchResult %></p>
+                        <p class="card-text"><strong>Status:</strong> <%= match.status %></p>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <div class="alert alert-info" role="alert">
+                No past matches found.
+            </div>
+        <% } %>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

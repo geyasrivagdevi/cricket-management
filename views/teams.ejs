@@ -1,23 +1,304 @@
-<% layout('layout') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Teams</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #ffd700 !important;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #0066cc;
+            border-bottom: 2px solid #0066cc;
+            padding-bottom: 10px;
+            font-size: 2.5em;
+            margin-top: 60px;
+        }
+        h2 {
+            color: #003366;
+            margin-top: 30px;
+            font-size: 1.8em;
+            border-left: 5px solid #0066cc;
+            padding-left: 10px;
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+        .team-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .team-card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            object-fit: cover;
+            border: 2px solid #0066cc;
+        }
+        .team-name {
+            font-weight: bold;
+            color: #003366;
+        }
+        @media (max-width: 768px) {
+            .team-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-cricket"></i> CricketMania</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/players"><i class="fas fa-user"></i> Players</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/teams"><i class="fas fa-users"></i> Teams</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/matches"><i class="fas fa-trophy"></i> Matches</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/live_scores"><i class="fas fa-chart-line"></i> Live Scoring</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" id="logoutBtn" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Cricket Teams</h1>
 
-<h2>Teams</h2>
-<button onclick="showForm('teamForm')">Add Team</button>
-<div id="teamForm" style="display: none;">
-    <h3>Add Team</h3>
-    <form id="addTeamForm">
-        <label for="teamName">Team Name:</label>
-        <input type="text" id="teamName" name="name" required>
-        <button type="submit">Add</button>
-    </form>
-</div>
-<ul id="teamsList">
-    <% teams.forEach(team => { %>
-        <li>
-            <%= team.name %>
-            <button onclick="showEditForm(<%= team.id %>, '<%= team.name %>')">Edit</button>
-            <button onclick="deleteTeam(<%= team.id %>)">Delete</button>
-        </li>
-    <% }) %>
-</ul>
+        <h2>Popular Men's International Teams</h2>
+        <div class="team-grid">
+          <div class="team-card">
+            <img src="https://flagpedia.net/data/flags/w1600/af.png" alt="Afghanistan">
+            <div class="team-name">Afghanistan</div>
+          </div>
+          <div class="team-card">
+            <img src="https://www.publicdomainpictures.net/pictures/230000/velka/australia-flag.jpg" alt="Australia">
+            <div class="team-name">Australia</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/OIP.hsvmtpJAHNP3nTbxQkOYCAHaEe?rs=1&pid=ImgDetMain" alt="Bangladesh">
+            <div class="team-name">Bangladesh</div>
+          </div>
+          <div class="team-card">
+            <img src="https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg" alt="England">
+            <div class="team-name">England</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/R.607b9f69862d76af04b474113c0c7ff5?rik=lfnOsbv7mhDNbQ&riu=http%3a%2f%2fupload.wikimedia.org%2fwikipedia%2fcommons%2fb%2fbc%2fFlag_of_India.png&ehk=Pk5lH0C%2fhstFahWfb15vLjtrJb3DslIU4%2fAQneo9IIM%3d&risl=&pid=ImgRaw&r=0" alt="India">
+            <div class="team-name">India</div>
+          </div>
+          <div class="team-card">
+            <img src="https://cdn.wisden.com/wp-content/uploads/2019/05/Cricket-Ireland-300x296.png" alt="Ireland">
+            <div class="team-name">Ireland</div>
+          </div>
+          <div class="team-card">
+            <img src="https://i.pinimg.com/originals/b4/72/51/b47251a51c6e125e9078f920d0174de6.png" alt="New Zealand">
+            <div class="team-name">New Zealand</div>
+          </div>
+          <div class="team-card">
+            <img src="https://static.vecteezy.com/system/resources/previews/000/114/048/original/free-vector-pakistan-flag.jpg" alt="Pakistan">
+            <div class="team-name">Pakistan</div>
+          </div>
+          <div class="team-card">
+            <img src="https://4.bp.blogspot.com/-lWbo8eh2vTY/TWNWygzlxyI/AAAAAAAAA6g/HnGNU1TUHX8/s1600/Flag+South+Africa.png" alt="South Africa">
+            <div class="team-name">South Africa</div>
+          </div>
+          <div class="team-card">
+            <img src="https://e7.pngegg.com/pngimages/337/779/png-clipart-flag-of-sri-lanka-national-flag-sri-lanka-women-s-national-cricket-team-flag.png" alt="Sri Lanka">
+            <div class="team-name">Sri Lanka</div>
+          </div>
+          <div class="team-card">
+            <img src="https://a4.espncdn.com/combiner/i?img=%2Fi%2Fteamlogos%2Fcricket%2F500%2F4.png" alt="West Indies">
+            <div class="team-name">West Indies</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/R.383fb0e9a9c2575768d1d3567a0bf159?rik=wqeXmdIXAti8NQ&riu=http%3a%2f%2fs1.bwallpapers.com%2fwallpapers%2f2014%2f05%2f29%2fzimbabwe-flag_121441236.jpg&ehk=MJomGLf4d%2fos%2fB3g7QRyVQ4gTxeJ0QL9z%2fd1oAHtR7s%3d&risl=&pid=ImgRaw&r=0" alt="Zimbabwe">
+            <div class="team-name">Zimbabwe</div>
+          </div>
+        </div>
 
-<script src="/scripts/teams.js"></script>
+        <h2>Popular Women's International Teams</h2>
+        <div class="team-grid">
+          <div class="team-card">
+            <img src="https://www.publicdomainpictures.net/pictures/230000/velka/australia-flag.jpg" alt="Australia Women">
+            <div class="team-name">Australia Women</div>
+          </div>
+          <div class="team-card">
+            <img src="https://www.countryflags.com/wp-content/uploads/england-flag-jpg-xl.jpg" alt="England Women">
+            <div class="team-name">England Women</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/R.607b9f69862d76af04b474113c0c7ff5?rik=lfnOsbv7mhDNbQ&riu=http%3a%2f%2fupload.wikimedia.org%2fwikipedia%2fcommons%2fb%2fbc%2fFlag_of_India.png&ehk=Pk5lH0C%2fhstFahWfb15vLjtrJb3DslIU4%2fAQneo9IIM%3d&risl=&pid=ImgRaw&r=0" alt="India Women">
+            <div class="team-name">India Women</div>
+          </div>
+          <div class="team-card">
+            <img src="https://cdn.wisden.com/wp-content/uploads/2019/05/Cricket-Ireland-300x296.png" alt="Ireland Women">
+            <div class="team-name">Ireland Women</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/OIP.fKeI3M5JelkSg9iqiANCcgHaE8?w=264&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7" alt="Netherlands Women">
+            <div class="team-name">Netherlands Women</div>
+          </div>
+          <div class="team-card">
+            <img src="https://i.pinimg.com/originals/b4/72/51/b47251a51c6e125e9078f920d0174de6.png" alt="New Zealand Women">
+            <div class="team-name">New Zealand Women</div>
+          </div>
+          <div class="team-card">
+            <img src="https://static.vecteezy.com/system/resources/previews/000/114/048/original/free-vector-pakistan-flag.jpg" alt="Pakistan Women">
+            <div class="team-name">Pakistan Women</div>
+          </div>
+          <div class="team-card">
+            <img src="https://4.bp.blogspot.com/-lWbo8eh2vTY/TWNWygzlxyI/AAAAAAAAA6g/HnGNU1TUHX8/s1600/Flag+South+Africa.png" alt="South Africa Women">
+            <div class="team-name">South Africa Women</div>
+          </div>
+          <div class="team-card">
+            <img src="https://e7.pngegg.com/pngimages/337/779/png-clipart-flag-of-sri-lanka-national-flag-sri-lanka-women-s-national-cricket-team-flag.png" alt="Sri Lanka Women">
+            <div class="team-name">Sri Lanka Women</div>
+          </div>
+          <div class="team-card">
+            <img src="https://a4.espncdn.com/combiner/i?img=%2Fi%2Fteamlogos%2Fcricket%2F500%2F4.png" alt="West Indies Women">
+            <div class="team-name">West Indies Women</div>
+          </div>
+        </div>
+
+        <h2>ILT20 Teams</h2>
+        <div class="team-grid">
+          <div class="team-card">
+            <img src="https://img1.hscicdn.com/image/upload/f_auto/lsci/db/PICTURES/CMS/349600/349619.jpg" alt="Dubai Capitals">
+            <div class="team-name">Dubai Capitals</div>
+          </div>
+          <div class="team-card">
+            <img src="https://img1.hscicdn.com/image/upload/f_auto/lsci/db/PICTURES/CMS/349600/349621.jpg" alt="Gulf Giants">
+            <div class="team-name">Gulf Giants</div>
+          </div>
+          <div class="team-card">
+            <img src="https://img1.hscicdn.com/image/upload/f_auto/lsci/db/PICTURES/CMS/344000/344077.png" alt="MI Emirates">
+            <div class="team-name">MI Emirates</div>
+          </div>
+          <div class="team-card">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjB88j1w3KpDfqyvQOq4Pooc3LCh_7KF-hbaB3FTBuKiDw5sYTLMYzkhEzKhaQNErk6-42jW7dX2lyk6CjMJzJ7HZe6zkSavKQQoC4Q6dF6tyqoHKcVz6qQnwKNioFBUxzV5y95EEtQ_tPxWOAbQQLW0uC72swFmhF33dWZSFgJ3mec7jRHMx4woAuc/w1200-h630-p-k-no-nu/Desert-Vipers-Squad.jpg" alt="Desert Vipers">
+            <div class="team-name">Desert Vipers</div>
+          </div>
+          <div class="team-card">
+            <img src="https://img1.hscicdn.com/image/upload/f_auto/lsci/db/PICTURES/CMS/349600/349617.png" alt="Abu Dhabi Knight Riders">
+            <div class="team-name">Abu Dhabi Knight Riders</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/R.a972e33d8ea307ec341c3663b935d412?rik=qdWaVz59JtfiNg&pid=ImgRaw&r=0" alt="Sharjah Warriors">
+            <div class="team-name">Sharjah Warriors</div>
+          </div>
+        </div>
+
+        <h2>IPL Teams</h2>
+        <div class="team-grid">
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/R.b43d79b105fbbfcab5cb7f917b34fa11?rik=KDt7PNc6XOCyNw&riu=http%3a%2f%2fupload.wikimedia.org%2fwikipedia%2fen%2fthumb%2f2%2f2b%2fChennai_Super_Kings_Logo.svg%2f1241px-Chennai_Super_Kings_Logo.svg.png&ehk=hbQcDQU5TfADVG2jH%2ftRjer4ib9kp0SWZNeoazGZq%2bQ%3d&risl=&pid=ImgRaw&r=0" alt="Chennai Super Kings">
+            <div class="team-name">Chennai Super Kings</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/R.105e6e49df990998d6cef62a3d7401e4?rik=M%2f2IEnT0TabImg&pid=ImgRaw&r=0" alt="Delhi Capitals">
+            <div class="team-name">Delhi Capitals</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/OIP.zx23dL8NJf6-3sTJxwIPXgHaLa?rs=1&pid=ImgDetMain" alt="Kolkata Knight Riders">
+            <div class="team-name">Kolkata Knight Riders</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/OIP.f67xvcp3fZCvRIq6O2aDawHaEK?rs=1&pid=ImgDetMain" alt="Mumbai Indians">
+            <div class="team-name">Mumbai Indians</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/OIP.mXoNNDvnpBuuAyX9Qn-TAwHaK5?rs=1&pid=ImgDetMain" alt="Royal Challengers Bangalore">
+            <div class="team-name">Royal Challengers Bangalore</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/OIP.-hjqr3ZUhhGyftSgmeE_1gHaGl?rs=1&pid=ImgDetMain" alt="Sunrisers Hyderabad">
+            <div class="team-name">Sunrisers Hyderabad</div>
+          </div>
+          <div class="team-card">
+            <img src="https://i.pinimg.com/originals/b2/21/ee/b221ee9ae9ecb3fa0f158161ef457e29.png" alt="Rajasthan Royals">
+            <div class="team-name">Rajasthan Royals</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/OIP.lJBaAOulXNJ7i6_s-k8vBAAAAA?rs=1&pid=ImgDetMain" alt="Punjab Kings">
+            <div class="team-name">Punjab Kings</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/OIP.cpyb5ctgN5_xH4v6DZ9jOwHaHa?rs=1&pid=ImgDetMain" alt="Gujarat Titans">
+            <div class="team-name">Gujarat Titans</div>
+          </div>
+          <div class="team-card">
+            <img src="https://th.bing.com/th/id/OIP.aq-D2kv7TciQN0RG8TTD7QHaFj?rs=1&pid=ImgDetMain" alt="Lucknow Super Giants">
+            <div class="team-name">Lucknow Super Giants</div>
+          </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                const response = await fetch('/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                });
+
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    console.error('Logout failed');
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

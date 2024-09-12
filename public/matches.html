@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matches</title>
+</head>
+<body>
+    <h1>Cricket Matches</h1>
+
+    <ul>
+        {% for match in matches %}
+            <li>
+                <strong>{{ match.matchDesc }}</strong><br>
+                {{ match.team1 }} vs {{ match.team2 }}<br>
+                Status: {{ match.status }}<br>
+                {{ match.team1 }} Score: {{ match.team1Score }}<br>
+                {{ match.team2 }} Score: {{ match.team2Score }}<br>
+                Result: {{ match.matchResult }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

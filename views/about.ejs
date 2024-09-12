@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About CricketMania - Your Ultimate Cricket Destination</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('https://wallpaperaccess.com/full/3468697.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #333;
+        }
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #ffd700 !important;
+        }
+        .content {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 900px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #1e5799;
+        }
+        h1, h2 {
+            color: #1e5799;
+            border-bottom: 2px solid #1e5799;
+            padding-bottom: 10px;
+        }
+        h1 {
+            font-size: 2.5em;
+        }
+        h2 {
+            font-size: 2em;
+            margin-top: 1.5rem;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .icon-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .icon-list li {
+            margin-bottom: 10px;
+        }
+        .icon-list i {
+            margin-right: 10px;
+            color: #1e5799;
+        }
+        .testimonial {
+            font-style: italic;
+            border-left: 3px solid #1e5799;
+            padding-left: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-cricket"></i> CricketMania</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="/index"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/players"><i class="fas fa-user"></i> Players</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/teams"><i class="fas fa-users"></i> Teams</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/matches"><i class="fas fa-trophy"></i> Matches</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/live_scores"><i class="fas fa-chart-line"></i> Live Scoring</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" id="logoutBtn" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5">
+        <div class="content">
+            <h1><i class="fas fa-cricket"></i> About CricketMania</h1>
+            <p>Welcome to CricketMania, your ultimate destination for everything cricket! We provide the latest news, scores, and updates on all things cricket. Whether you're a fan of international cricket, domestic leagues, or just the sport in general, CricketMania is here to keep you informed and entertained.</p>
+            
+            <h2><i class="fas fa-bullseye"></i> Our Mission</h2>
+            <p>At CricketMania, our mission is to deliver up-to-date and accurate cricket information to fans around the world. We strive to bring you the latest news, detailed match analyses, and engaging content that keeps you connected to the sport you love.</p>
+            
+            <h2><i class="fas fa-gifts"></i> What We Offer</h2>
+            <ul class="icon-list">
+                <li><i class="fas fa-newspaper"></i> <strong>Latest News:</strong> Stay updated with the newest developments in the cricketing world.</li>
+                <li><i class="fas fa-chart-line"></i> <strong>Live Scores:</strong> Follow live scores and match updates in real time.</li>
+                <li><i class="fas fa-users"></i> <strong>Player and Team Information:</strong> Get detailed profiles and statistics on your favorite players and teams.</li>
+                <li><i class="fas fa-chart-bar"></i> <strong>Match Analysis:</strong> Read in-depth analyses and reviews of past and upcoming matches.</li>
+            </ul>
+            
+            <h2><i class="fas fa-calendar-alt"></i> Upcoming Highlights</h2>
+            <ul class="icon-list">
+                <li><i class="fas fa-trophy"></i> <strong>ICC World Cup 2023:</strong> Join us for comprehensive coverage of cricket's biggest event!</li>
+                <li><i class="fas fa-fire"></i> <strong>IPL 2023:</strong> Follow the excitement of the Indian Premier League with our in-depth analysis and live updates.</li>
+                <li><i class="fas fa-history"></i> <strong>The Ashes 2023:</strong> Don't miss our special coverage of the historic rivalry between England and Australia.</li>
+            </ul>
+            
+            <h2><i class="fas fa-users"></i> Our Team</h2>
+            <p>Our team consists of passionate cricket enthusiasts and experienced sports journalists who work tirelessly to bring you the best content. We are dedicated to providing insightful and engaging information to enhance your cricket experience.</p>
+            
+            <div class="testimonial">
+                <p>"CricketMania is my go-to source for all things cricket. The live scores and expert analysis are unmatched!"</p>
+                <footer>- John D., Cricket Enthusiast</footer>
+            </div>
+            
+            <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+            <p>If you have any questions, suggestions, or feedback, feel free to reach out to us at support@cricketmania.com. We value your input and are always here to help.</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
