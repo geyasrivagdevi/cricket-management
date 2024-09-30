@@ -545,8 +545,6 @@ app.get('/matches', async (req, res) => {
       date: match.date,
     }));
 
-    console.log('Matches data:', matches); // Debugging line
-
     // Render matches to the webpage
     res.render('matches', { matches });
   } catch (error) {
@@ -554,6 +552,7 @@ app.get('/matches', async (req, res) => {
     res.status(500).render('error', { message: 'Failed to fetch match details' });
   }
 });
+
 app.get('/live_scores', async (req, res) => {
   try {
     const response = await axios.get('https://cricket.sportmonks.com/api/v2.0/livescores', {
@@ -573,7 +572,7 @@ app.get('/live_scores', async (req, res) => {
         matchFormat: match.matchType || 'N/A',
         status: match.status || 'N/A'
       }));
-      console.log("live scoring:", matchesData);
+      
       res.render('live_scores', { matchesData });
     } else {
       res.render('live_scores', { matchesData: [] });
@@ -671,6 +670,11 @@ app.post('/logout', (req, res, next) => {
       if (err) { return next(err); }
       res.redirect('/login'); 
   });
+});
+
+// 
+app.get('/forgot_password', (req, res) => {
+  res.render('forgot_password'); 
 });
 
 // Render login page
