@@ -3,29 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Cricket Scores</title>
-    <link rel="stylesheet" href="/css/live.css">
+    <title>CricketMania - Live Scores</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url('https://th.bing.com/th/id/OIP.QDaX4lifbN8Phulc7XC8OAHaDt?w=740&h=370&rs=1&pid=ImgDetMain');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+        .bg-blur {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+    </style>
 </head>
-<body>
-    <h1>Live Cricket Scores</h1>
-    <p>Debug: matchesData length: <%= matchesData ? matchesData.length : 'undefined' %></p>
-    
-    <% if (matchesData && matchesData.length > 0) { %>
-        <ul>
-            <% matchesData.forEach(match => { %>
-                <li>
-                    <h2><%= match.matchDesc %></h2>
-                    <p><%= match.team1 %> vs <%= match.team2 %></p>
-                    <p>Series: <%= match.seriesName %></p>
-                    <p>Format: <%= match.matchFormat %></p>
-                    <p>Status: <%= match.status %></p>
-                    <p><%= match.team1 %> Score: <%= match.team1Score %></p>
-                    <p><%= match.team2 %> Score: <%= match.team2Score %></p>
-                </li>
-            <% }); %>
-        </ul>
-    <% } else { %>
-        <p>No live scores available at the moment.</p>
-    <% } %>
+<body class="bg-gradient-to-r from-blue-200 to-blue-500 min-h-screen">
+    <nav class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <a href="/" class="text-2xl font-bold">CricketMania</a>
+                <a href="/" class="hover:text-blue-200 transition duration-300"><i class="fas fa-home"></i> Home</a>
+                <a href="/players" class="hover:text-blue-200 transition duration-300"><i class="fas fa-user"></i> Players</a>
+                <a href="/teams" class="hover:text-blue-200 transition duration-300"><i class="fas fa-users"></i> Teams</a>
+                <a href="/matches" class="hover:text-blue-200 transition duration-300"><i class="fas fa-trophy"></i> Matches</a>
+                <a href="/live_scores" class="hover:text-blue-200 transition duration-300"><i class="fas fa-chart-line"></i> Live Scoring</a>
+                <a href="/about" class="hover:text-blue-200 transition duration-300"><i class="fas fa-info-circle"></i> About</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="#" id="logoutBtn" class="hover:text-blue-200 transition duration-300"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-white mb-8 text-center">Live Scoring</h1> <!-- Added Heading -->
+
+        <div class="bg-blur rounded-lg shadow-xl p-8">
+            <% if (matchesData && matchesData.length > 0) { %>
+                <div class="space-y-6">
+                    <% matchesData.forEach(match => { %>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                            <div class="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-3 px-6">
+                                <h2 class="text-xl font-semibold"><%= match.matchDesc %></h2>
+                            </div>
+                            <div class="p-6 flex flex-col md:flex-row justify-between items-center">
+                                <div class="flex-1 text-center md:text-left mb-4 md:mb-0">
+                                    <p class="text-lg font-bold"><%= match.team1 %></p>
+                                    <p class="text-xl font-bold text-lightblue-600"><%= match.team1Score %></p>
+                                </div>
+                                <div class="flex-none text-center mb-4 md:mb-0">
+                                    <p class="text-lg font-semibold">VS</p>
+                                    <p class="text-sm text-gray-600"><%= match.matchFormat %></p>
+                                </div>
+                                <div class="flex-1 text-center md:text-right">
+                                    <p class="text-lg font-bold"><%= match.team2 %></p>
+                                    <p class="text-xl font-bold text-lightblue-600"><%= match.team2Score %></p>
+                                </div>
+                            </div>
+                            <div class="bg-gray-100 px-6 py-3 flex justify-between items-center">
+                                <p class="text-sm"><i class="fas fa-trophy text-lightblue-500 mr=2"></i><%= match.seriesName %></p>
+                                <p class="text-sm font-semibold"><i class="fas fa-info-circle text-lightblue=500 mr=2"></i><%= match.status %></p>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <div class="text-center bg-white text-gray=700 p=8 rounded-lg shadow-md">
+                    <i class="fas fa-spinner fa-spin text=4xl text-lightblue=500 mb=4"></i>
+                    <p class=text-xl>No live matches found at the moment. Please check back later.</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class=bg-blue=600 text-white text-center py=4 mt-auto">
+        &copy; 2024 CricketMania. All rights reserved.
+    </footer>
+
+    <!-- JavaScript for logout functionality -->
+    <script src="//code.jquery.com/jquery.min.js"></script> 
+    <script>
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                const response = await fetch('/logout', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                });
+
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    console.error('Logout failed');
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+    </script>
+
 </body>
 </html>

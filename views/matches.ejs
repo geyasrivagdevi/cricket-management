@@ -3,88 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Past Matches and Scores</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <title>CricketMania - Live Scores</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://th.bing.com/th/id/OIP.QDaX4lifbN8Phulc7XC8OAHaDt?w=740&h=370&rs=1&pid=ImgDetMain');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
         }
-        .navbar {
-            background-color: #1e5799;
-        }
-        .navbar-brand, .nav-link {
-            color: #fff !important;
-        }
-        .card {
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .card-header {
-            background-color: #1e5799;
-            color: #fff;
-        }
-        .team-score {
-            font-size: 1.2em;
-            font-weight: bold;
+        .bg-blur {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.9);
         }
     </style>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/"><i class="fas fa-cricket"></i> CricketMania</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="/index"><i class="fas fa-home"></i> Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/players"><i class="fas fa-user"></i> Players</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/teams"><i class="fas fa-users"></i> Teams</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/matches"><i class="fas fa-trophy"></i> Matches</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/live_scores"><i class="fas fa-chart-line"></i> Live Scoring</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/about"><i class="fas fa-info-circle"></i> About</a></li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" id="logoutBtn" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
+<body class="bg-gradient-to-r from-blue-200 to-blue-500 min-h-screen">
+    <nav class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <a class="text-2xl font-bold">CricketMania</a>
+                <a href="/" class="hover:text-blue-200 transition duration-300"><i class="fas fa-home"></i> Home</a>
+                <a href="/players" class="hover:text-blue-200 transition duration-300"><i class="fas fa-user"></i> Players</a>
+                <a href="/teams" class="hover:text-blue-200 transition duration-300"><i class="fas fa-users"></i> Teams</a>
+                <a href="/matches" class="hover:text-blue-200 transition duration-300"><i class="fas fa-trophy"></i> Matches</a>
+                <a href="/live_scores" class="hover:text-blue-200 transition duration-300"><i class="fas fa-chart-line"></i> Live Scoring</a>
+                <a href="/about" class="hover:text-blue-200 transition duration-300"><i class="fas fa-info-circle"></i> About</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="#" id="logoutBtn" class="hover:text-blue-200 transition duration-300"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
-        <h1 class="mb-4">Past Matches and Scores</h1>
-        <% if (matches && matches.length > 0) { %>
-            <% matches.forEach(match => { %>
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0"><%= match.matchDesc %></h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text"><strong>Date:</strong> <%= match.match_date %></p>
-                        <p class="card-text"><strong>Type:</strong> <%= match.match_type %></p>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="team-score"><%= match.team1 %>: <%= match.team1Score %></p>
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold mb-8 text-white text-center">Cricket Matches</h1>
+
+        <div class="bg-white rounded-lg shadow-xl p-8">
+            <% if (matches && matches.length > 0) { %>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <% matches.forEach(match => { %>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                            <div class="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-4 px-6">
+                                <h2 class="text-xl font-semibold"><%= match.name %></h2>
                             </div>
-                            <div class="col-md-6">
-                                <p class="team-score"><%= match.team2 %>: <%= match.team2Score %></p>
+                            <div class="p-6">
+                                <p class="mb-2"><i class="fas fa-calendar-alt text-blue-600 mr-2"></i><%= match.date %></p>
+                                <p class="mb-2"><i class="fas fa-map-marker-alt text-blue-600 mr-2"></i><%= match.venue %></p>
+                                <p class="mb-2"><i class="fas fa-cricket-ball text-blue-600 mr-2"></i><%= match.matchType %></p>
+                                <p class="mb-4"><i class="fas fa-info-circle text-blue-600 mr-2"></i><%= match.status %></p>
+                                <a href="#" class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded transition duration-200">View Details</a>
                             </div>
                         </div>
-                        <p class="card-text"><strong>Result:</strong> <%= match.matchResult %></p>
-                        <p class="card-text"><strong>Status:</strong> <%= match.status %></p>
-                    </div>
+                    <% }); %>
                 </div>
-            <% }); %>
-        <% } else { %>
-            <div class="alert alert-info" role="alert">
-                No past matches found.
-            </div>
-        <% } %>
+            <% } else { %>
+                <p class="text-center text-xl text-gray-600">No matches scheduled at the moment.</p>
+            <% } %>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <footer class="bg-blue-600 text-white text-center py-3 mt-8">
+        &copy; 2024 CricketMania. All rights reserved.
+    </footer>
+
+    <script>
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                const response = await fetch('/logout', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                });
+
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    console.error('Logout failed');
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+    </script>
 </body>
 </html>

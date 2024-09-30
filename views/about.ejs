@@ -15,7 +15,7 @@
             color: #333;
         }
         .navbar {
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: #1e5799;
             padding: 1rem;
         }
         .navbar-brand, .nav-link {
@@ -72,7 +72,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="/"><i class="fas fa-cricket"></i> CricketMania</a>
+            <a class="navbar-brand"><i class="fas fa-cricket"></i> CricketMania</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -94,6 +94,37 @@
 
     <div class="container mt-5 pt-5">
         <div class="content">
+
+            <!-- New section for Cricket Quotes -->
+            <h2><i class="fas fa-quote-left"></i> Cricket Wisdom</h2>
+            <div id="cricketQuotes" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <% const quotes = [
+                        { text: "You don't play for the crowd, you play for the country.", author: "Mahendra Singh Dhoni" },
+                        { text: "Reputations are made by playing cricket, not by sitting on the bench.", author: "Kapil Dev" },
+                        { text: "I hate losing and cricket being my first love, once I enter the ground it's a different zone altogether and that hunger for winning is always there.", author: "Sachin Tendulkar" },
+                        { text: "The difference between ordinary and extraordinary is that little extra.", author: "Virat Kohli" },
+                        { text: "Cricket is a pressure game, and when it comes to an India-Pakistan match the pressure is doubled.", author: "Imran Khan" }
+                    ]; %>
+                    <% quotes.forEach((quote, index) => { %>
+                        <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                            <div class="testimonial">
+                                <p>"<%= quote.text %>"</p>
+                                <footer>- <%= quote.author %></footer>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#cricketQuotes" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#cricketQuotes" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
             <h1><i class="fas fa-cricket"></i> About CricketMania</h1>
             <p>Welcome to CricketMania, your ultimate destination for everything cricket! We provide the latest news, scores, and updates on all things cricket. Whether you're a fan of international cricket, domestic leagues, or just the sport in general, CricketMania is here to keep you informed and entertained.</p>
             
@@ -127,6 +158,31 @@
             <p>If you have any questions, suggestions, or feedback, feel free to reach out to us at support@cricketmania.com. We value your input and are always here to help.</p>
         </div>
     </div>
+
+    <script>
+    // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                const response = await fetch('/logout', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin' // Ensures cookies are sent with the request
+                });
+
+                if (response.redirected) {
+                    window.location.href = response.url; // Redirect to login or another page
+                } else {
+                    console.error('Logout failed');
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -53,41 +53,93 @@
         .list-group-item:hover {
             background-color: #e9ecef;
         }
+        .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+        background-color: #0056b3;
+        }
+
+        .mt-3 {
+        margin-top: 1rem;
+        }
+    .btn-danger {
+        background-color: #dc3545; /* Bootstrap danger color */
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333; /* Darker shade on hover */
+        color: white;
+    }
+
+    .btn-lg {
+        padding: 10px 20px; /* Larger padding for a bigger button */
+        font-size: 1.2rem; /* Increase font size */
+    }
+
+    .logout-container {
+        margin-top: 20px; /* Space above the button */
+        text-align: right; /* Align the button to the right */
+    }
+
     </style>
 </head>
 <body>
+    <div id="message" style="display: none;" class="alert" role="alert"></div>
     <div class="container">
+        <div class="logout-container">
+            <form action="/logout" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger btn-lg" style="border-radius: 5px; transition: background-color 0.3s;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </form>
+        </div>
         <h1 class="text-center mb-5"><i class="fas fa-cricket fa-lg me-3"></i>Cricket Admin Dashboard</h1>
 
+        <% if (typeof message !== 'undefined' && message) { %>
+            <div class="alert alert-success" role="alert">
+              <%= message %>
+            </div>
+          <% } %>
+        
         <div class="row">
             <div class="col-md-6">
                 <div class="form-section">
                     <h2><i class="fas fa-plus-circle me-2"></i>Create Team</h2>
-                    <form action="/admin/add-team" method="POST" enctype="multipart/form-data">
+                    <form id="createTeamForm" action="/admin/add-team" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="teamName" class="form-label">Team Name</label>
                             <input type="text" class="form-control" id="teamName" name="teamName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="teamFlag" class="form-label">Team Flag</label>
+                            <input type="file" class="form-control" id="teamFlag" name="teamFlag" accept="image/*">
                         </div>
                         <button type="submit" class="btn btn-primary">Add Team</button>
                     </form>
                 </div>
 
-                <!-- In the Create Team form -->
-               <div class="mb-3">
-                    <label for="teamFlag" class="form-label">Team Flag</label>
-                    <input type="file" class="form-control" id="teamFlag" name="teamFlag" accept="image/*">
-                </div>
-
                 <div class="form-section">
                     <h2><i class="fas fa-edit me-2"></i>Update Team</h2>
-                    <form action="/admin/update-team" method="POST">
+                    <form id="updateTeamForm" action="/admin/update-team" method="POST">
                         <div class="mb-3">
-                            <label for="teamId" class="form-label">Team ID</label>
-                            <input type="text" class="form-control" id="teamId" name="teamId" required>
+                            <label for="id" class="form-label">Team ID</label>
+                            <input type="text" class="form-control" id="id" name="id" required>
                         </div>
                         <div class="mb-3">
-                            <label for="newTeamName" class="form-label">New Team Name</label>
-                            <input type="text" class="form-control" id="newTeamName" name="newTeamName" required>
+                            <label for="teamName" class="form-label">New Team Name</label>
+                            <input type="text" class="form-control" id="teamName" name="team_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="photoPath" class="form-label">New Photo Path</label>
+                            <input type="file" class="form-control" id="photoPath" name="photo_path">
                         </div>
                         <button type="submit" class="btn btn-warning">Update Team</button>
                     </form>
@@ -95,10 +147,10 @@
 
                 <div class="form-section">
                     <h2><i class="fas fa-trash-alt me-2"></i>Delete Team</h2>
-                    <form action="/admin/delete-team" method="POST">
+                    <form id="deleteTeamForm" action="/admin/delete-team" method="POST">
                         <div class="mb-3">
-                            <label for="deleteTeamId" class="form-label">Team ID</label>
-                            <input type="text" class="form-control" id="deleteTeamId" name="deleteTeamId" required>
+                            <label for="deleteid" class="form-label">Team ID</label>
+                            <input type="text" class="form-control" id="deleteid" name="id" required>
                         </div>
                         <button type="submit" class="btn btn-danger">Delete Team</button>
                     </form>
@@ -107,7 +159,9 @@
                 <div class="form-section">
                     <h2><i class="fas fa-list me-2"></i>Teams List</h2>
                     <ul id="teamList" class="list-group">
-                        <!-- Teams will be populated here via JavaScript -->
+                        <button type="button" class="btn btn-primary mt-3" onclick="location.href='/teams'">
+                            View All Teams
+                        </button>
                     </ul>
                 </div>
             </div>
@@ -115,39 +169,136 @@
             <div class="col-md-6">
                 <div class="form-section">
                     <h2><i class="fas fa-user-plus me-2"></i>Create Player</h2>
-                    <form action="/admin/add-player" method="POST" enctype="multipart/form-data">
+                    <form id="createplayerForm" action="/admin/add-player" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label for="playerName" class="form-label">Player Name</label>
-                            <input type="text" class="form-control" id="playerName" name="playerName" required>
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="teamId" class="form-label">Team ID</label>
-                            <input type="text" class="form-control" id="teamId" name="teamId" required>
+                            <label for="date_of_birth" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" class="form-control" id="age" name="age" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="batting_style" class="form-label">Batting Style</label>
+                            <input type="text" class="form-control" id="batting_style" name="batting_style" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bowling_style" class="form-label">Bowling Style</label>
+                            <input type="text" class="form-control" id="bowling_style" name="bowling_style" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="playing_role" class="form-label">Playing Role</label>
+                            <input type="text" class="form-control" id="playing_role" name="playing_role" required>
+                        </div>
+                        <div class="mb-3">
+                            <h4>Teams</h4>
+                            <div id="teamsContainer">
+                                <div class="team-entry mb-2">
+                                    <input type="text" name="teams[]" class="form-control" placeholder="Team Name" required>
+                                    <button type="button" class="btn btn-danger remove-team mt-2">Remove</button>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary mt-2" id="addTeamButton">Add Another Team</button>
+                        </div>
+                        <div class="mb-3">
+                            <label for="player_profile" class="form-label">Player Profile</label>
+                            <textarea class="form-control" id="player_profile" name="player_profile"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="records" class="form-label">Records</label>
+                            <textarea class="form-control" id="records" name="records"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="debut_match" class="form-label">Debut Match</label>
+                            <input type="text" class="form-control" id="debut_match" name="debut_match">
+                        </div>
+                        <div class="mb-3">
+                            <label for="last_match" class="form-label">Last Match</label>
+                            <input type="text" class="form-control" id="last_match" name="last_match">
+                        </div>
+                        <div class="mb-3">
+                            <label for="photo_path" class="form-label">Player Photo</label>
+                            <input type="file" class="form-control" id="photo_path" name="photo_path" accept="image/*">
                         </div>
                         <button type="submit" class="btn btn-primary">Add Player</button>
                     </form>
                 </div>
 
-                <!-- In the Create Player form -->
-                <div class="mb-3">
-                   <label for="playerPhoto" class="form-label">Player Photo</label>
-                   <input type="file" class="form-control" id="playerPhoto" name="playerPhoto" accept="image/*">
-                </div>
-
                 <div class="form-section">
                     <h2><i class="fas fa-user-edit me-2"></i>Update Player</h2>
-                    <form action="/admin/update-player" method="POST">
+                    <form id="updatePlayerForm" action="/admin/update-player" method="POST" enctype="multipart/form-data">
+
                         <div class="mb-3">
                             <label for="playerId" class="form-label">Player ID</label>
                             <input type="text" class="form-control" id="playerId" name="playerId" required>
                         </div>
                         <div class="mb-3">
-                            <label for="newPlayerName" class="form-label">New Player Name</label>
-                            <input type="text" class="form-control" id="newPlayerName" name="newPlayerName" required>
+                            <label for="newfull_name" class="form-label">New Full Name</label>
+                            <input type="text" class="form-control" id="newfull_name" name="newfull_name">
                         </div>
                         <div class="mb-3">
-                            <label for="newTeamId" class="form-label">New Team ID</label>
-                            <input type="text" class="form-control" id="newTeamId" name="newTeamId" required>
+                            <label for="newdate_of_birth" class="form-label">New Date of Birth</label>
+                            <input type="date" class="form-control" id="newdate_of_birth" name="newdate_of_birth">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newAge" class="form-label">New Age</label>
+                            <input type="number" class="form-control" id="newAge" name="newAge">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newbatting_style" class="form-label">New Batting Style</label>
+                            <input type="text" class="form-control" id="newbatting_style" name="newbatting_style">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newbowling_style" class="form-label">New Bowling Style</label>
+                            <input type="text" class="form-control" id="newbowling_style" name="newbowling_style">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newplaying_role" class="form-label">New Playing Role</label>
+                            <input type="text" class="form-control" id="newplaying_role" name="newplaying_role">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newteam" class="form-label">New Team</label>
+                            <input type="text" class="form-control" id="newteam" name="newteam">
+                        </div>
+                        <div class="mb-3">
+                            <label for="new_profile" class="form-label">New Player Profile</label>
+                            <textarea type="text" class="form-control" id="new_profile" name="new_profile"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add_profile" class="form-label">Add to Player Profile</label>
+                            <textarea class="form-control" id="add_profile" name="add_profile" placeholder="Add additional details here"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="new_records" class="form-label">New Records</label>
+                            <input class="form-control" id="new_records" name="new_records">
+                        </div>
+                        <div class="mb-3">
+                            <label for="add_records" class="form-label">Add to Records</label>
+                            <input class="form-control" id="add_records" name="add_records" placeholder="Add additional details here">
+                        </div>
+                        <div class="mb-3">
+                            <label for="new_new_debut" class="form-label">New Debut Match</label>
+                            <input class="form-control" id="new_new_debut" name="new_new_debut">
+                        </div>
+                        <div class="mb-3">
+                            <label for="add_new_debut" class="form-label">Add Debut Match</label>
+                            <input class="form-control" id="add_new_debut" name="add_new_debut" placeholder="Add additional details here">
+                        </div>
+                        <div class="mb-3">
+                            <label for="new_last_match" class="form-label">New Last Match</label>
+                            <input class="form-control" id="new_last_match" name="new_last_match">
+                        </div>
+                        <div class="mb-3">
+                            <label for="add_last_records" class="form-label">Add Last Match</label>
+                            <input class="form-control" id="add_last_records" name="add_last_records" placeholder="Add additional details here">
+                        </div>
+                        <div class="mb-3">
+                            <label for="photoPath" class="form-label">New Photo Path</label>
+                            <input type="file" class="form-control" id="photoPath" name="photo_path">
                         </div>
                         <button type="submit" class="btn btn-warning">Update Player</button>
                     </form>
@@ -155,7 +306,7 @@
 
                 <div class="form-section">
                     <h2><i class="fas fa-user-minus me-2"></i>Delete Player</h2>
-                    <form action="/admin/delete-player" method="POST">
+                    <form id="deletePlayerForm" onsubmit="handleDeletePlayer(event)">
                         <div class="mb-3">
                             <label for="deletePlayerId" class="form-label">Player ID</label>
                             <input type="text" class="form-control" id="deletePlayerId" name="deletePlayerId" required>
@@ -163,11 +314,12 @@
                         <button type="submit" class="btn btn-danger">Delete Player</button>
                     </form>
                 </div>
-
                 <div class="form-section">
                     <h2><i class="fas fa-users me-2"></i>Players List</h2>
                     <ul id="playerList" class="list-group">
-                        <!-- Players will be populated here via JavaScript -->
+                        <button type="button" class="btn btn-primary mt-3" onclick="location.href='/players'">
+                            View All Players
+                        </button>
                     </ul>
                 </div>
             </div>
@@ -208,8 +360,152 @@
             }
         }
 
+        async function fetchPlayerDetails(playerId) {
+            try {
+                const response = await fetch(`/admin/player/${playerId}`);
+                const player = await response.json();
+                const playerDetails = document.getElementById('playerDetails');
+                playerDetails.innerHTML = `
+                    <h3>${player.name}</h3>
+                    <p><strong>Date of Birth:</strong> ${player.date_of_birth}</p>
+                    <p><strong>Age:</strong> ${player.age}</p>
+                    <p><strong>Batting Style:</strong> ${player.batting_style}</p>
+                    <p><strong>Bowling Style:</strong> ${player.bowling_style}</p>
+                    <p><strong>Playing Role:</strong> ${player.playing_role}</p>
+                    <p><strong>Team:</strong> ${player.team.name}</p>
+                    <p><strong>Profile:</strong> ${player.profile}</p>
+                    <h4>Records</h4>
+                    <p>${player.records}</p>
+                    <h4>Matches</h4>
+                    <p><strong>Recent Matches:</strong> ${player.recentMatches}</p>
+                    <p><strong>Debut Match:</strong> ${player.debutMatch}</p>
+                    <p><strong>Last Match:</strong> ${player.lastMatch}</p>
+                `;
+            } catch (error) {
+                console.error('Error fetching player details:', error);
+            }
+        }
+
+        document.getElementById('playerList').addEventListener('click', event => {
+            const playerId = event.target.closest('.list-group-item')?.dataset?.playerId;
+            if (playerId) {
+                fetchPlayerDetails(playerId);
+            }
+        });
+
         fetchTeams();
         fetchPlayers();
     </script>
+    <script>
+        document.getElementById('addTeamButton').addEventListener('click', function() {
+    const container = document.getElementById('teamsContainer');
+    const newTeamEntry = document.createElement('div');
+    newTeamEntry.className = 'team-entry mb-2';
+    newTeamEntry.innerHTML = `
+        <input type="text" name="teams[]" class="form-control" placeholder="Team Name" required>
+        <button type="button" class="btn btn-danger remove-team mt-2">Remove</button>
+    `;
+    container.appendChild(newTeamEntry);
+});
+
+// Event delegation for removing rows
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('remove-team')) {
+        e.target.parentElement.remove();
+    }
+});
+document.getElementById('updatePlayerForm').addEventListener('submit', function(e) {
+    const optionalFields = [
+        'newfull_name', 'newdate_of_birth', 'newAge', 
+        'newbatting_style', 'newbowling_style', 'newplaying_role', 
+        'newteam', 'new_profile', 'add_profile', 
+        'new_records', 'add_records', 'new_new_debut', 
+        'add_new_debut', 'new_last_match', 'add_last_records'
+    ];
+    
+    const hasUpdate = optionalFields.some(field => document.getElementById(field).value.trim() !== '');
+    
+    if (!hasUpdate) {
+        alert('Please provide at least one field to update.');
+        e.preventDefault();
+    }
+});
+
+    </script>
+    
+    <script>
+        function showMessage(message, isError = false) {
+          const messageDiv = document.getElementById('message');
+          messageDiv.textContent = message;
+          messageDiv.className = isError ? 'alert alert-danger' : 'alert alert-success';
+          messageDiv.style.display = 'block';
+          setTimeout(() => {
+            messageDiv.style.display = 'none';
+          }, 5000);
+        }
+        
+        // Function to handle form submission
+        function handleFormSubmit(formId, url, method) {
+          const form = document.getElementById(formId);
+          form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const id = formData.get('id');
+    
+            fetch(`${url}/${playerId}`, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(Object.fromEntries(formData))
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.error) {
+                showMessage(data.error, true);
+              } else {
+                showMessage(data.message);
+                form.reset(); // Reset the form after successful submission
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              showMessage('An error occurred. Please try again.', true);
+            });
+          });
+        }
+        async function handleDeletePlayer(event) {
+            event.preventDefault(); // Prevent the default form submission
+            const playerId = document.getElementById('deletePlayerId').value;
+
+            try {
+                const response = await fetch(`/admin/delete-player/${playerId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                alert(result.message); 
+           
+            } else {
+                const error = await response.json();
+                alert(error.message); // Notify user of error
+            }
+        } catch (error) {
+            console.error('Error deleting player:', error);
+            alert('An error occurred while trying to delete the player.');
+        }
+    }
+        
+        // Set up form handlers
+        handleFormSubmit('createTeamForm', '/admin/add-team', 'POST');
+        handleFormSubmit('updateTeamForm', '/admin/update-team/', 'POST');
+        handleFormSubmit('deleteTeamForm', '/admin/delete-team/' + document.getElementById('deleteTeamId').value, 'POST');
+        
+        handleFormSubmit('createPlayerForm', '/admin/add-player', 'POST');
+        handleFormSubmit('updatePlayerForm', '/admin/update-player/' + document.getElementById('updateplayerId').value, 'POST');
+        handleFormSubmit('deletePlayerForm', '/admin/delete-player', 'DELETE');
+        
+        </script>
 </body>
 </html>
