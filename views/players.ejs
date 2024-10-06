@@ -20,12 +20,12 @@
                 <a href="/about" class="hover:text-blue-200 transition duration-300"><i class="fas fa-info-circle"></i> About</a>
             </div>
             <div class="flex items-center space-x-4">
-                <form action="/players/search" method="GET" class="flex">
+                <!-- <form action="/players/search" method="GET" class="flex">
                     <input type="text" name="q" placeholder="Search players..." class="px-3 py-1 rounded-l-md focus:outline-none text-gray-800">
                     <button type="submit" class="bg-blue-500 px-3 py-1 rounded-r-md hover:bg-blue-600 transition duration-300">
                         <i class="fas fa-search"></i>
                     </button>
-                </form>
+                </form> -->
                 <a href="/logout" class="hover:text-blue-200 transition duration-300"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
@@ -34,16 +34,16 @@
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold text-white mb-8 text-center">Cricket Players</h1>
 
-        <!-- Alphabet filter -->
-        <div class="bg-white p-2 rounded-lg shadow-md mb-8">
-            <div class="flex flex-wrap justify-center">
-                <% for (let i = 65; i <= 90; i++) { %>
-                    <a href="#" class="m-1 px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300 text-sm">
-                        <%= String.fromCharCode(i) %>
-                    </a>
-                <% } %>
-            </div>
+       <!-- Alphabet filter -->
+       <!-- <div class="bg-white p-2 rounded-lg shadow-md mb-8">
+        <div class="flex flex-wrap justify-center">
+            <% for (let i = 65; i <= 90; i++) { %>
+                <a href="/players/filter/<%= String.fromCharCode(i) %>" class="m-1 px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300 text-sm">
+                    <%= String.fromCharCode(i) %>
+                </a>
+            <% } %>
         </div>
+    </div>  -->
 
         <!-- Players grid -->
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -79,6 +79,18 @@
     </footer>
 
     <script>
+        // Define the performSearch function
+        function performSearch(query) {
+            // Convert the query to lowercase for case-insensitive search
+            const lowercaseQuery = query.toLowerCase();
+  
+            // Assuming you have an array of players
+            return players.filter(player => 
+                player.fullname.toLowerCase().includes(lowercaseQuery) ||
+                player.country_id.toLowerCase().includes(lowercaseQuery) ||
+                player.position.name.toLowerCase().includes(lowercaseQuery)
+            );
+        }
         // Logout functionality
         document.getElementById('logoutBtn').addEventListener('click', async (e) => {
             e.preventDefault();

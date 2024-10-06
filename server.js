@@ -105,7 +105,7 @@ function checkNotAuthenticated(req, res, next) {
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-      cb(null, 'public/uploads/')
+      cb(null, 'img/')
   },
   filename: function (req, file, cb) {
       cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -113,36 +113,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
-// Function to fetch cricket country data with pagination
-async function fetchFromOffset(offset) {
-  const apiKey = process.env.CRICKET_API_KEY; // Use environment variable for API key
-  const url = `https://cricket.sportmonks.com/api/v2.0/countries`;
-
-  try {
-    const fetch = (await import('node-fetch')).default; // Use dynamic import
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (data.status !== 'success') {
-      console.error('Failed to fetch data');
-      return [];
-    }
-
-    let datarray = data.data;
-    if (!datarray) {
-      return [];
-    } else if (offset >= data.info.totalRows) {
-      return datarray;
-    } else {
-      const nextData = await fetchFromOffset(offset + 25);
-      return datarray.concat(nextData);
-    }
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    return [];
-  }
-}
 
 // Routes
 app.get('/', checkAuthenticated, async (req, res) => {
@@ -155,94 +125,13 @@ app.get('/', checkAuthenticated, async (req, res) => {
   }
 });
 
-// Fetch all players
-app.get('/players', async (req, res) => {
-  try {
-    const response = await axios.get("https://cricket.sportmonks.com/api/v2.0/players?api_token="+ process.env.CRICKET_DATA_API_KEY);
-    const headers = {
-      "Authorization": `Bearer ${process.env.CRICKET_DATA_API_KEY}`, // Include the API token from environment variables
-      "X-API-Key": process.env.CRICKET_DATA_API_KEY, 
-    };
-
-    // Return the data in the required format
-  
-    res.render('players', { players: response.data.data });
-  } catch (error) {
-    console.error('Error fetching players:', error);
-    res.status(500).send('Error fetching players');
-  }
-});
-
-
-app.get('/player/:id', async (req, res) => {
-  const playerId = req.params.id; // Correctly getting player ID from the request parameters
-  const apiKey = process.env.CRICKET_DATA_API_KEY; // Ensure this is set in your .env file
-
-  try {
-      
-      // Fetch player details
-      const playerResponse = await axios.get(`https://cricket.sportmonks.com/api/v2.0/players/${playerId}?api_token=${apiKey}`);
-      
-      console.log('Player Response:', JSON.stringify(playerResponse.data, null, 2));
-
-      // Check if the response indicates success
-      if (!playerResponse.data || !playerResponse.data.data) {
-        return res.status(404).send('Player not found');
-      }
-
-      const player = playerResponse.data.data; // Get player data directly
-
-      // Prepare player details for rendering
-      const playerDetails = {
-          id: player.id,
-          fullname: player.fullname,
-          firstname: player.firstname,
-          lastname: player.lastname,
-          imagePath: player.image_path,
-          dateOfBirth: player.dateofbirth,
-          gender: player.gender,
-          battingStyle: player.battingstyle,
-          bowlingStyle: player.bowlingstyle,
-          position: player.position.name, // Accessing position name
-      };
-
-      // Fetch career stats
-      const careerResponse = await axios.get(`https://cricket.sportmonks.com/api/v2.0/players/${playerId}?include=career&api_token=${apiKey}`);
-      const careerStats = careerResponse.data.data.career || [];
-
-      // Map the relevant statistics to a more usable format
-      const formattedCareerStats = careerStats.map(stat => ({
-        format: stat.type, // Adjusted to use the correct field for format
-        matches: stat.batting.matches || 'N/A',
-        runs: stat.batting.runs_scored || 'N/A',
-        wickets: stat.bowling ? stat.bowling.wickets || 'N/A' : 'N/A' // Assuming a similar structure for bowling
-      }));
-
-      console.log('Formatted Career Stats:', JSON.stringify(formattedCareerStats, null, 2));
-
-    // Render the player details along with career stats
-    res.render('player_details', { 
-      player: playerDetails, 
-      careerStats: formattedCareerStats 
-    });
-
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).send('Error fetching player data');
-  }
-});
-
-
+//Admin page configuration
 app.get('/admin', checkAuthenticated, (req, res) => {
   if (req.user.email.endsWith('@cricket.com')) {
     res.render('admin', { message: req.query.message || null }); // Render admin page
   } else {
     res.redirect('/login'); // Redirect to login if not an admin
   }
-});
-
-app.get('/about', (req, res) => {
-  res.render('about');
 });
 
 // Create Team
@@ -380,7 +269,6 @@ app.post('/admin/add-player', upload.single('photo_path'), async (req, res) => {
 });
 
 app.post('/admin/update-player', upload.single('photo_path'), async (req, res) => {
-
   const {
       playerId,
       newfull_name,
@@ -476,12 +364,10 @@ app.post('/admin/update-player', upload.single('photo_path'), async (req, res) =
       params.push(photoPath);
   }
 
-
   // Check for updates
   if (updates.length === 0) {
       return res.status(400).redirect('/admin?message=No fields to update');
   }
-
   // Add the playerId to the parameters
   params.push(playerId);
 
@@ -497,7 +383,6 @@ app.post('/admin/update-player', upload.single('photo_path'), async (req, res) =
       res.status(200).redirect('/admin?message=Player updated successfully');
   });
 });
-
 
 // Delete Player
 app.delete('/admin/delete-player/:id', async (req, res) => {
@@ -518,76 +403,134 @@ app.delete('/admin/delete-player/:id', async (req, res) => {
   }
 });
 
-
-// Endpoint to fetch and display matches
-app.get('/matches', async (req, res) => {
-  const options = {
-    method: 'GET',
-    url: 'https://api.cricapi.com/v1/matches?apikey=adeba55a-761c-4c2c-817b-9f7d9f9fd156&offset=0',
-  };
-
+// Fetch all players
+app.get('/players', async (req, res) => {
   try {
-    const response = await axios.request(options);
-    console.log('Full response data:', JSON.stringify(response.data, null, 2));
-
-    // Check if there are matches in the response
-    if (!response.data || !response.data.data || !Array.isArray(response.data.data) || response.data.data.length === 0) {
-      return res.render('matches', { matches: [] });
-    }
-
-    // Extract match data
-    const matches = response.data.data.map(match => ({
-      id: match.id,
-      name: match.name,
-      matchType: match.matchType,
-      status: match.status,
-      venue: match.venue,
-      date: match.date,
-    }));
-
-    // Render matches to the webpage
-    res.render('matches', { matches });
+    const response = await axios.get("https://cricket.sportmonks.com/api/v2.0/players?api_token="+ process.env.CRICKET_DATA_API_KEY);
+    const headers = {
+      "Authorization": `Bearer ${process.env.CRICKET_DATA_API_KEY}`, // Include the API token from environment variables
+      "X-API-Key": process.env.CRICKET_DATA_API_KEY, 
+    };
+  
+    res.render('players', { players: response.data.data });
   } catch (error) {
-    console.error('Error fetching matches:', error.response ? error.response.data : error.message);
-    res.status(500).render('error', { message: 'Failed to fetch match details' });
-  }
+    console.error('Error fetching players:', error);
+        // If API call fails, try fetching from database
+        try {
+            const players = await Player.find({});
+            res.render('players', { players });
+        } catch (dbError) {
+            console.error('Error fetching players from database:', dbError);
+            res.render('players', { players: [], error: 'An error occurred while fetching players.' });
+        }
+    }
 });
 
-app.get('/live_scores', async (req, res) => {
+//fetch player through search
+app.get('/players/search', async (req, res) => {
+  const searchQuery = req.query.query;
   try {
-    const response = await axios.get('https://cricket.sportmonks.com/api/v2.0/livescores', {
-      params: {
-        api_token: process.env.CRICKET_DATA_API_KEY
+    const searchResults = await performSearch(searchQuery);
+    res.render('players', { players: searchResults });
+  } catch (error) {
+    console.error('Search error:', error);
+        // If API call fails, try database
+        try {
+            const searchResults = await Player.find({
+                $or: [
+                    { fullname: { $regex: searchQuery, $options: 'i' } },
+                    { country_id: { $regex: searchQuery, $options: 'i' } },
+                    { 'position.name': { $regex: searchQuery, $options: 'i' } }
+                ]
+            });
+            res.render('players', { players: searchResults });
+        } catch (dbError) {
+            console.error('Error searching players from database:', dbError);
+            res.render('players', { players: [], error: 'An error occurred while searching. Please try again.' });
+        }
+    }
+});
+
+app.get('/players/filter/:letter', async (req, res) => {
+  const letter = req.params.letter;
+  try {
+      const filteredPlayers = await Player.find({
+          fullname: { $regex: `^${letter}`, $options: 'i' }
+      });
+      res.render('players', { players: filteredPlayers });
+  } catch (error) {
+    console.error('Error filtering players:', error);
+    // If API call fails, try database
+    try {
+        const filteredPlayers = await Player.find({
+            fullname: { $regex: `^${letter}`, $options: 'i' }
+        });
+        res.render('players', { players: filteredPlayers });
+    } catch (dbError) {
+        console.error('Error filtering players from database:', dbError);
+        res.render('players', { players: [], error: 'An error occurred while filtering players.' });
+    }
+}
+});
+
+// Fetches Players through playerid
+app.get('/player/:id', async (req, res) => {
+  const playerId = req.params.id; // Correctly getting player ID from the request parameters
+  const apiKey = process.env.CRICKET_DATA_API_KEY; // Ensure this is set in your .env file
+
+  try {
+      
+      // Fetch player details
+      const playerResponse = await axios.get(`https://cricket.sportmonks.com/api/v2.0/players/${playerId}?api_token=${apiKey}`);
+      
+      console.log('Player Response:', JSON.stringify(playerResponse.data, null, 2));
+
+      // Check if the response indicates success
+      if (!playerResponse.data || !playerResponse.data.data) {
+        return res.status(404).send('Player not found');
       }
+
+      const player = playerResponse.data.data; // Get player data directly
+
+      // Prepare player details for rendering
+      const playerDetails = {
+          id: player.id,
+          fullname: player.fullname,
+          firstname: player.firstname,
+          lastname: player.lastname,
+          imagePath: player.image_path,
+          dateOfBirth: player.dateofbirth,
+          gender: player.gender,
+          battingStyle: player.battingstyle,
+          bowlingStyle: player.bowlingstyle,
+          position: player.position.name, // Accessing position name
+      };
+
+      // Fetch career stats
+      const careerResponse = await axios.get(`https://cricket.sportmonks.com/api/v2.0/players/${playerId}?include=career&api_token=${apiKey}`);
+      const careerStats = careerResponse.data.data.career || [];
+
+      // Map the relevant statistics to a more usable format
+      const formattedCareerStats = careerStats.map(stat => ({
+        format: stat.type, // Adjusted to use the correct field for format
+        matches: stat.batting.matches || 'N/A',
+        runs: stat.batting.runs_scored || 'N/A',
+        wickets: stat.bowling ? stat.bowling.wickets || 'N/A' : 'N/A' // Assuming a similar structure for bowling
+      }));
+
+      console.log('Formatted Career Stats:', JSON.stringify(formattedCareerStats, null, 2));
+
+    // Render the player details along with career stats
+    res.render('player_details', { 
+      player: playerDetails, 
+      careerStats: formattedCareerStats 
     });
 
-    if (response.data && response.data.data) {
-      const matchesData = response.data.data.map(match => ({
-        matchDesc: match.matchDesc || 'N/A',
-        team1: match.t1 || 'Team 1',
-        team2: match.t2 || 'Team 2',
-        team1Score: match.t1s || 'N/A',
-        team2Score: match.t2s || 'N/A',
-        seriesName: match.seriesName || 'N/A',
-        matchFormat: match.matchType || 'N/A',
-        status: match.status || 'N/A'
-      }));
-      
-      res.render('live_scores', { matchesData });
-    } else {
-      res.render('live_scores', { matchesData: [] });
-    }
   } catch (error) {
-    console.error('Error fetching live scores:', error);
-    res.render('live_scores', { matchesData: [], error: 'Failed to fetch live scores' });
+    console.error('Error fetching data:', error);
+    res.status(500).send('Error fetching player data');
   }
 });
-
-// Error handling route
-app.get('/error', (req, res) => {
-    res.render('error', { message: 'An error occurred. Please try again.' });
-});
-
 
 // Route to fetch team details and players for a specific team
 app.get('/teams', async (req, res) => {
@@ -625,6 +568,8 @@ app.get('/teams', async (req, res) => {
     res.status(500).render('error', { message: 'Failed to fetch teams or rankings' });
   }
 });
+
+//Fetching team through teamId
 app.get('/team/:teamId', async (req, res) => {
   const teamId = req.params.teamId;
 
@@ -644,6 +589,102 @@ app.get('/team/:teamId', async (req, res) => {
   }
 });
 
+// Function to fetch cricket country data with pagination
+async function fetchFromOffset(offset) {
+  const apiKey = process.env.CRICKET_API_KEY; // Use environment variable for API key
+  const url = `https://cricket.sportmonks.com/api/v2.0/countries`;
+
+  try {
+    const fetch = (await import('node-fetch')).default; // Use dynamic import
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.status !== 'success') {
+      console.error('Failed to fetch data');
+      return [];
+    }
+
+    let datarray = data.data;
+    if (!datarray) {
+      return [];
+    } else if (offset >= data.info.totalRows) {
+      return datarray;
+    } else {
+      const nextData = await fetchFromOffset(offset + 25);
+      return datarray.concat(nextData);
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
+
+// Endpoint to fetch and display matches
+app.get('/matches', async (req, res) => {
+  const options = {
+    method: 'GET',
+    url: 'https://api.cricapi.com/v1/matches?apikey=adeba55a-761c-4c2c-817b-9f7d9f9fd156&offset=0',
+  };
+
+  try {
+    const response = await axios.request(options);
+    console.log('Full response data:', JSON.stringify(response.data, null, 2));
+
+    // Check if there are matches in the response
+    if (!response.data || !response.data.data || !Array.isArray(response.data.data) || response.data.data.length === 0) {
+      return res.render('matches', { matches: [] });
+    }
+
+    // Extract match data
+    const matches = response.data.data.map(match => ({
+      id: match.id,
+      name: match.name,
+      matchType: match.matchType,
+      status: match.status,
+      venue: match.venue,
+      date: match.date,
+    }));
+
+    // Render matches to the webpage
+    res.render('matches', { matches });
+  } catch (error) {
+    console.error('Error fetching matches:', error.response ? error.response.data : error.message);
+    res.status(500).render('error', { message: 'Failed to fetch match details' });
+  }
+});
+
+//fetches LiveScoring through API
+app.get('/live_scores', async (req, res) => {
+  try {
+    const response = await axios.get('https://cricket.sportmonks.com/api/v2.0/livescores', {
+      params: {
+        api_token: process.env.CRICKET_DATA_API_KEY
+      }
+    });
+
+    if (response.data && response.data.data) {
+      const matchesData = response.data.data.map(match => ({
+        matchDesc: match.matchDesc || 'N/A',
+        team1: match.t1 || 'Team 1',
+        team2: match.t2 || 'Team 2',
+        team1Score: match.t1s || 'N/A',
+        team2Score: match.t2s || 'N/A',
+        seriesName: match.seriesName || 'N/A',
+        matchFormat: match.matchType || 'N/A',
+        status: match.status || 'N/A'
+      }));
+      
+      res.render('live_scores', { matchesData });
+    } else {
+      res.render('live_scores', { matchesData: [] });
+    }
+  } catch (error) {
+    console.error('Error fetching live scores:', error);
+    res.render('live_scores', { matchesData: [], error: 'Failed to fetch live scores' });
+  }
+});
+
+
 // Render customer index page
 app.get('/index', checkAuthenticated, (req, res) => {
   if (req.user.user_type === 'customer') {
@@ -651,6 +692,16 @@ app.get('/index', checkAuthenticated, (req, res) => {
   } else {
     res.redirect('/login'); // Redirect to login if not a customer
   }
+});
+
+app.get('/about', (req, res) => {
+  res.render('about');
+});
+
+
+// Error handling route
+app.get('/error', (req, res) => {
+    res.render('error', { message: 'An error occurred. Please try again.' });
 });
 
 // Handle login
