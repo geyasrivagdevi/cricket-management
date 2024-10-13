@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CricketMania - Your Ultimate Cricket Destination</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .hero-bg {
+            background-image: url('https://www.istockphoto.com/photos/cricket-stadium');
+            background-size: cover;
+            background-position: center;
+            height: 70vh;
+        }
+        .shadow-text {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-blue-600 text-white sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-cricket-ball text-3xl mr-2"></i>
+                        <span class="font-bold text-xl">CricketMania</span>
+                    </a>
+                    <div class="hidden md:block ml-10">
+                        <a href="/register" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium transition duration-300"><i class="fas fa-home mr-2"></i>Home</a>
+                        <a href="/register" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium transition duration-300"><i class="fas fa-user mr-2"></i>Players</a>
+                        <a href="/register" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium transition duration-300"><i class="fas fa-users mr-2"></i>Teams</a>
+                        <a href="/register" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium transition duration-300"><i class="fas fa-trophy mr-2"></i>Matches</a>
+                        <a href="/register" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium transition duration-300"><i class="fas fa-chart-line mr-2"></i>Live Scores</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <a href="/login" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium transition duration-300"><i class="fas fa-sign-in-alt mr-2"></i>Login</a>
+                    <a href="/register" class="bg-white text-blue-600 hover:bg-blue-100 px-3 py-2 rounded-md text-sm font-medium ml-2 transition duration-300"><i class="fas fa-user-plus mr-2"></i>Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-bg flex items-center justify-center">
+        <div class="text-center p-8 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-700 shadow-2xl max-w-3xl mx-auto">
+            <h1 class="text-5xl font-extrabold mb-6 text-white leading-tight">
+                Welcome to <span class="text-300">CricketMania</span>
+            </h1>
+            <p class="text-xl mb-10 text-gray-200">
+                Your ultimate destination for all things cricket
+            </p>
+            <a href="/register" class="inline-block bg-white text-blue-700 font-bold py-4 px-8 rounded-full text-lg transition duration-300 ease-in-out transform hover:scale-105 hover:bg-yellow-300 hover:text-blue-800 shadow-lg">
+                Join the Cricket Community
+            </a>
+        </div>
+    </div>
+
+    <!-- Featured Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Live Scores -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 border border-gray-200">
+                <div class="bg-blue-600 text-white py-4 px-5">
+                    <h2 class="text-xl font-bold flex items-center">
+                        <i class="fas fa-chart-line mr-3"></i> Live Scores
+                    </h2>
+                </div>
+                <div class="p-5 space-y-3">
+                    <ul class="space-y-3">
+                        <li class="flex justify-between items-center bg-gray-100 rounded-lg p-3 shadow-sm">
+                            <span class="font-semibold text-gray-800">India vs Bangladesh</span>
+                            <span class="text-blue-600 font-bold">150/5 (30 ov)</span>
+                        </li>
+                        <li class="flex justify-between items-center bg-gray-100 rounded-lg p-3 shadow-sm">
+                            <span class="font-semibold text-gray-800">Australia vs New Zealand</span>
+                            <span class="text-blue-600 font-bold">200/3 (40 ov)</span>
+                        </li>
+                        <li class="flex justify-between items-center bg-gray-100 rounded-lg p-3 shadow-sm">
+                            <span class="font-semibold text-gray-800">South Africa vs Sri Lanka</span>
+                            <span class="text-blue-600 font-bold">180/6 (35 ov)</span>
+                        </li>
+                    </ul>
+                    <a href="/register" class="block mt-4 text-center bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition duration=300">
+                        View All Live Scores
+                    </a>
+                </div>
+            </div>
+
+            <!-- Latest News -->
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-xl overflow-hidden transform hover:scale-102 transition duration-300 ease-in-out border border-blue-100">
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-5">
+                    <h2 class="text-xl font-semibold flex items-center">
+                        <i class="fas fa-newspaper mr-3"></i> Latest News
+                    </h2>
+                </div>
+                <div class="p-5 space-y-3">
+                    <ul class="space-y-3">
+                        <li class="border-b border-gray-200 pb-2">
+                            <a class="text-gray-800 hover:text-blue-600 transition duration-300 flex items-start">
+                                <i class="fas fa-angle-right mt-1 mr-2 text-blue-500"></i>
+                                Kohli's century leads India to victory in thrilling match
+                            </a>
+                        </li>
+                        <li class="border-b border-gray-200 pb-2">
+                            <a class="text-gray-800 hover:text-blue-600 transition duration-300 flex items-start">
+                                <i class="fas fa-angle-right mt-1 mr-2 text-blue-500"></i>
+                                England announces strong squad for upcoming series
+                            </a>
+                        </li>
+                        <li>
+                            <a class="text-gray-800 hover:text-blue-600 transition duration-300 flex items-start">
+                                <i class="fas fa-angle-right mt-1 mr-2 text-blue-500"></i>
+                                ICC introduces new playing conditions for Test matches
+                            </a>
+                        </li>
+                    </ul>
+                    <a href="/register" class="block mt-6 text-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 rounded-full hover:from-blue-700 hover:to-indigo-700 transition duration=300 shadow-md">
+                        More Cricket News
+                    </a>
+                </div>
+            </div>
+
+            <!-- Upcoming Matches -->
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300 border border-gray-200">
+                <div class="bg-blue-600 text-white py-4 px-5">
+                    <h2 class="text-xl font-bold flex items-center">
+                        <i class="fas fa-calendar-alt mr-3"></i>
+                        Upcoming Matches
+                    </h2>
+                </div>
+                <div class="p-5 space-y-4">
+                    <div class="flex justify-between items-center bg-gray-100 rounded-lg p-3 shadow-sm">
+                        <span class="font-semibold text-gray-800">Pakistan vs Australia</span>
+                        <span class="text-blue-600 font-bold">Nov 10, 2024</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-100 rounded-lg p-3 shadow-sm">
+                        <span class="font-semibold text-gray-800">South Africa vs India</span>
+                        <span class="text-blue-600 font-bold">Nov 15, 2024</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-100 rounded-lg p-3 shadow-sm">
+                        <span class="font-semibold text-gray-800">England vs West Indies</span>
+                        <span class="text-blue-600 font-bold">Nov 20, 2024</span>
+                    </div>
+                    <a href="/register" class="block mt-4 text-center bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">
+                        Full Schedule
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-between">
+                <div class="w-full md:w-1/4 mb-6 md:mb-0">
+                    <h3 class="text-lg font-semibold mb-2">CricketMania</h3>
+                    <p class="text-sm">Your ultimate cricket destination</p>
+                </div>
+                <div class="w-full md:w-1/4 mb-6 md:mb-0">
+                    <h3 class="text-lg font-semibold mb-2">Quick Links</h3>
+                    <ul class="text-sm">
+                        <li><a class="hover:text-blue-200 transition duration-300">About Us</a></li>
+                        <li><a class="hover:text-blue-200 transition duration-300">Contact</a></li>
+                        <li><a class="hover:text-blue-200 transition duration-300">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-1/4 mb-6 md:mb-0">
+                    <h3 class="text-lg font-semibold mb-2">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="www.facebook.com" class="hover:text-blue-200 transition duration-300"><i class="fab fa-facebook-f"></i></a>
+                        <a href="www.twitter.com" class="hover:text-blue-200 transition duration-300"><i class="fab fa-twitter"></i></a>
+                        <a href="www.instagram.com" class="hover:text-blue-200 transition duration-300"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-sm">
+                &copy; 2023 CricketMania. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
