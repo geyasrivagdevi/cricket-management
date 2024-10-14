@@ -1,7 +1,7 @@
 {
     "name": "cms",
     "version": "1.0.0",
-    "main": "index.ejs",
+    "main": "home.ejs",
     "scripts": {
         "test": "mocha test/**/*.test.js",
         "devStart": "nodemon server.js"

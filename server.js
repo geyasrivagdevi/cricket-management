@@ -54,9 +54,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('public'));
 
-// Serve home.html at the root URL
+// Serve index.html at the root URL
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'home.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Passport configuration
@@ -123,7 +123,7 @@ const upload = multer({ storage: storage });
 app.get('/', checkAuthenticated, async (req, res) => {
   try {
     // Fetch and render data
-    res.render('index', { name: req.user.name });
+    res.render('home', { name: req.user.name });
   } catch (error) {
     console.error('Error loading page:', error);
     res.status(500).send('Error loading page');
@@ -690,10 +690,10 @@ app.get('/live_scores', async (req, res) => {
 });
 
 
-// Render customer index page
-app.get('/index', checkAuthenticated, (req, res) => {
+// Render customer home page
+app.get('/home', checkAuthenticated, (req, res) => {
   if (req.user.user_type === 'customer') {
-    res.render('index'); // Render customer page
+    res.render('home'); // Render customer page
   } else {
     res.redirect('/login'); // Redirect to login if not a customer
   }
@@ -717,7 +717,7 @@ app.post('/login', passport.authenticate('local', {
   if (req.user.email.endsWith('@cricket.com')) {
     res.redirect('/admin');
   } else {
-    res.redirect('/index');
+    res.redirect('/home');
   }
 });
 
