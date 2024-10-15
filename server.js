@@ -52,11 +52,21 @@ app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.get('/', (req, res) => {
+  res.render('register');
+});
+
+app.get('/login', (req, res) => {
+  res.render('login');
+});
 app.use(express.static('public'));
 
-// Serve index.html at the root URL
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  if (req.isAuthenticated()) {
+    res.render('home', { name: req.user.name });
+  } else {
+    res.redirect('/register');
+  }
 });
 
 // Passport configuration
@@ -94,16 +104,12 @@ passport.deserializeUser((id, done) => {
 
 // Authentication middleware
 function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
+  if (req.isAuthenticated()) return next();
   res.redirect('/login');
 }
 
 function checkNotAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return res.redirect('/');
-  }
+  if (req.isAuthenticated()) return res.redirect('/');
   next();
 }
 
@@ -122,7 +128,6 @@ const upload = multer({ storage: storage });
 // Routes
 app.get('/', checkAuthenticated, async (req, res) => {
   try {
-    // Fetch and render data
     res.render('home', { name: req.user.name });
   } catch (error) {
     console.error('Error loading page:', error);
