@@ -7,7 +7,22 @@ const connection = mysql.createConnection({
   user: process.env.DB_USER,      // your MySQL username
   password: process.env.DB_PASSWORD, //  your MySQL password
   database: process.env.DB_NAME, //  your MySQL database name
+  connectionLimit: 10,
+  connectTimeout: 60000
 });
+
+function connectWithRetry() {
+  connection.connect((err) => {
+    if (err) {
+      console.error('Database connection failed:', err);
+      setTimeout(connectWithRetry, 5000);
+    } else {
+      console.log('Database connected successfully');
+    }
+  });
+}
+
+connectWithRetry();
 
 connection.connect(function(err) {
     if (err) {
